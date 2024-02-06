@@ -3,26 +3,28 @@ import time
 
 import pytest
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
+# from webdriver_manager.microsoft import EdgeChromiumDriverManager
 driver = None
 
 @pytest.fixture(autouse=True)
 def setup(request, browser, url):
     global driver
     if browser == "chrome":
-        driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
+        driver = webdriver.Chrome()
+        # driver = webdriver.Chrome(executable_path = ChromeDriverManager().install())
     elif browser == "firefox":
-        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+        driver = webdriver.Firefox()
     elif browser == "edge":
-        driver = webdriver.Edge(EdgeChromiumDriverManager().install())
-    driver.get(url)
+        driver = webdriver.Edge()
+    driver.get("https://www.yatra.com/")
     driver.maximize_window()
     request.cls.driver = driver
     yield
     driver.close()
 
+#browser name and url is passed during command line
 def pytest_addoption(parser):
     parser.addoption("--browser")
     parser.addoption("--url")
@@ -43,7 +45,7 @@ def pytest_runtest_makereport(item):
     extra = getattr(report, "extra", [])
     if report.when == "call":
         # always add url to report
-        extra.append(pytest_html.extras.url("http://www.rcvacademy.com/"))
+        extra.append(pytest_html.extras.url("https://www.yatra.com/"))
         xfail = hasattr(report, "wasxfail")
         if (report.skipped and xfail) or (report.failed and not xfail):
             # only add additional html on failure
@@ -59,4 +61,4 @@ def pytest_runtest_makereport(item):
         report.extra = extra
 
 def pytest_html_report_title(report):
-    report.title = "RCV Academy Automation Report"
+    report.title = "This is Test Report"

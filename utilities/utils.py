@@ -4,6 +4,7 @@ import softest
 import csv
 from openpyxl import Workbook, load_workbook
 
+
 class Utils(softest.TestCase):
     def assertListItemText(self, list, value):
         for stop in list:
@@ -16,7 +17,7 @@ class Utils(softest.TestCase):
         self.assert_all()
 
     def custom_logger(logLevel=logging.DEBUG):
-        #Set class/method name from where its called
+        # Set class/method name from where its called
         logger_name = inspect.stack()[1][3]
         # create logger
         logger = logging.getLogger(logger_name)
@@ -24,7 +25,8 @@ class Utils(softest.TestCase):
         # create console handler or file handler and set the log level
         fh = logging.FileHandler("automation.log", mode='a')
         # create formatter - how you want your logs to be formatted
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s : %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s : %(message)s',
+                                      datefmt='%m/%d/%Y %I:%M:%S %p')
         # add formatter to console or file handler
         fh.setFormatter(formatter)
         # add console handler to logger
@@ -32,6 +34,7 @@ class Utils(softest.TestCase):
         return logger
 
     def read_data_from_excel(file_name, sheet):
+        # Create an empty list
         datalist = []
         wb = load_workbook(filename=file_name)
         sh = wb[sheet]
@@ -46,17 +49,15 @@ class Utils(softest.TestCase):
         return datalist
 
     def read_data_from_csv(filename):
-        #Create an empty list
+        # Create an empty list
         datalist = []
-        #Open CSV file
-        csvdata = open(filename,"r")
-        #Create CSV reader
+        # Open CSV file
+        csvdata = open(filename, "r")
+        # Create CSV reader
         reader = csv.reader(csvdata)
-        #skip header
+        # skip header
         next(reader)
-        #Add CSV rows to list
+        # Add CSV rows to list
         for rows in reader:
             datalist.append(rows)
         return datalist
-
-
